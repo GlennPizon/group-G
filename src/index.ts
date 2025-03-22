@@ -5,6 +5,7 @@ import express from "express"
 import cors from "cors"
 import helmet from "helmet"
 import dotenv from "dotenv"
+import router from "./controllers/user.controller"
 
 const app = express();
 dotenv.config();
@@ -17,6 +18,8 @@ async function start(){
         app.use(express.json());
         app.use(cors());
         app.use(helmet());
+        app.use('/', router); //
+        app.use('/register', router); //Register a new user
         app.listen(
                 port, () =>{
                     console.log(`Server is running on port hhtp://localhost:${port}`);
