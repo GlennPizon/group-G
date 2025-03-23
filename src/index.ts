@@ -3,7 +3,7 @@ import cors from "cors";
 import helmet from "helmet";
 import dotenv from "dotenv";
 import { AppDataSource } from "./data-source";
-import userRoutes from "./controllers/user.controller"; // Import user routes
+import userRoutes from "./controllers/user.routes"; // Import user routes
 
 dotenv.config();
 const app = express();
@@ -15,11 +15,13 @@ app.use(cors());
 app.use(helmet());
 
 // Routes
-app.use("/", userRoutes); // Registers both DELETE and POST routes
+app.use("/api", userRoutes); // Prefixing routes to avoid conflicts
 
 // Start server
-AppDataSource.initialize().then(() => {
-    app.listen(port, () => {
-        console.log(`Server running at http://localhost:${port}`);
-    });
-}).catch((error) => console.log("Database connection error:", error));
+AppDataSource.initialize()
+    .then(() => {
+        app.listen(port, () => {
+            console.log(`Server running at http://localhost:${port}`);
+        });
+    })
+    .catch((error) => console.log("Database connection error:", error));
