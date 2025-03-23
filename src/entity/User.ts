@@ -9,10 +9,9 @@ enum Role {
 @Entity()
 export class User {
 
-    @PrimaryColumn({
-        type: "varchar",
+    @PrimaryColumn({type: "varchar",
         length: 50
-        
+
     })
     id: string
 
