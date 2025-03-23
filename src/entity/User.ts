@@ -1,4 +1,4 @@
-import { Entity, PrimaryColumn, Column } from "typeorm"
+import { Entity, PrimaryGeneratedColumn, Column } from "typeorm"
 
 
 enum Role {
@@ -9,11 +9,8 @@ enum Role {
 @Entity()
 export class User {
 
-    @PrimaryColumn({
-        type: "varchar",
-        length: 50
-    })
-    id: string
+    @PrimaryGeneratedColumn() // ✅ This auto-generates the ID
+    id: number;  
 
     @Column()
     email: string
