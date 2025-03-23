@@ -1,36 +1,30 @@
-import { Entity, PrimaryColumn, Column } from "typeorm"
-
-
-enum Role {
-    Admin = "Admin",
-    User = "User"
-}
+import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
 @Entity()
 export class User {
 
-    @PrimaryColumn({
-        type: "varchar",
-        length: 50
-    })
-    id: string
+    @PrimaryGeneratedColumn('uuid')
+    id: string;
 
-    @Column()
-    email: string
+    @Column({ nullable: true })
+    email: string;
 
-    @Column()
+    @Column({ nullable: true })
     password: string;
 
     @Column()
-    title: string
+    title: string;
 
     @Column()
-    firstname: string
+    firstname: string;
 
     @Column()
-    lastname: string
+    lastname: string;
 
-    @Column()
-    role: Role;
+    @Column({ default: "user" })
+    role: string;
+
+    @Column({ nullable: true })
+    age?: number;
 
 }
