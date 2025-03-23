@@ -12,6 +12,7 @@ export class User {
     @PrimaryColumn({
         type: "varchar",
         length: 50
+        
     })
     id: string
 
