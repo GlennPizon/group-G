@@ -1,33 +1,25 @@
-import { AppDataSource } from "./data-source"
-import { User } from "./entity/User"
-import initialize from "./data-source"
-import express from "express"
-import cors from "cors"
-import helmet from "helmet"
-import dotenv from "dotenv"
-import router from "./controllers/user.controller"
+import express from "express";
+import cors from "cors";
+import helmet from "helmet";
+import dotenv from "dotenv";
+import { AppDataSource } from "./data-source";
+import userRoutes from "./controllers/user.controller"; // Import user routes
 
-const app = express();
 dotenv.config();
-const port = parseInt(process.env.APP_PORT as string, 10);
+const app = express();
+const port = Number(process.env.APP_PORT) || 3000;
 
+// Middleware
+app.use(express.json());
+app.use(cors());
+app.use(helmet());
 
-async function start(){ 
-    try{
-        await initialize();
-        app.use(express.json());
-        app.use(cors());
-        app.use(helmet());
-        app.use('/', router); //
-        app.use('/register', router); //Register a new user
-        app.listen(
-                port, () =>{
-                    console.log(`Server is running on port hhtp://localhost:${port}`);
-                }
-        );
-    }catch(error){
-        console.log(error);
-    }
-}
+// Routes
+app.use("/", userRoutes); // Registers both DELETE and POST routes
 
-start()
+// Start server
+AppDataSource.initialize().then(() => {
+    app.listen(port, () => {
+        console.log(`Server running at http://localhost:${port}`);
+    });
+}).catch((error) => console.log("Database connection error:", error));
