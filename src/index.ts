@@ -15,7 +15,12 @@ app.use(cors());
 app.use(helmet());
 
 // Routes
-app.use("/api", userRoutes); // Prefixing routes to avoid conflicts
+app.use("/", userRoutes); // Registers both DELETE and POST routes
+app.use("/login", userRoutes); // Registers POST route
+app.use("/users", userRoutes); // Registers GET route
+app.get("/register", userRoutes); // Registers GET route
+app.delete("/user/:id", userRoutes); // Registers DELETE route
+
 
 // Start server
 AppDataSource.initialize()
