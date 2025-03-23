@@ -16,7 +16,7 @@ const repo: Repository<User> = AppDataSource.getRepository(User);
 //Router for the user controller
 const router = Router();
 
-//Create a new user
+//Create a new user by endpoint /register
 router.post(
     '/register',
     async (req: Request, res: Response) => {
