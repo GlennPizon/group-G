@@ -3,3 +3,4 @@
 build/
 tmp/
 temp/
+node_modules/
