@@ -64,6 +64,31 @@ userRouter.post('/login', async (req: Request, res: Response) => {
     }
 });
 
+// Delete User Function
+userRouter.delete("/users/:id", async (req, res) => {
+    try {
+        const userRepository = AppDataSource.getRepository(User);
+        const { id } = req.params;
+        const userId = parseInt(id, 10);
+
+        if (isNaN(userId)) {
+            res.status(400).json({ message: "Invalid user ID" });
+            return;
+        }
+
+        const user = await userRepository.findOne({ where: {id} });
+        if (!user) {
+            res.status(404).json({ message: "User not found" });
+            return;
+        }
+
+        await userRepository.remove(user);
+        res.status(200).json({ message: "User deleted successfully" });
+    } catch (error) {
+        res.status(500).json({ message: "Internal Server Error", error });
+    }
+});
+
 // ✅ Logout user using AuthService
 userRouter.post('/logout', async (req: Request, res: Response) => {
     try {
