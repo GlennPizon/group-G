@@ -8,7 +8,7 @@ dotenv.config();
 
 // ✅ Load environment variables safely
 const dbhost: string = process.env.DB_HOST;
-const dbport: number = Number(process.env.DB_PORT); // 🔹 Ensure port is a number
+const dbport: number = parseInt(process.env.DB_PORT); // 🔹 Ensure port is a number
 const dbuser: string = process.env.DB_USER ;
 const dbpassword: string = process.env.DB_PASS;
 const dbname: string = process.env.DB_NAME;
@@ -60,7 +60,7 @@ async function createDatabase() {
             return
         } 
         
-            await connection.query(`CREATE DATABASE IF NOT EXISTS ${dbname} `);
+            await connection.query(`CREATE DATABASE IF NOT EXISTS \`${dbname}\`;`);
             console.log(`Database "${dbname}" created successfully.`);
         
     } catch (error) {

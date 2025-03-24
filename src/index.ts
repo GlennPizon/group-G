@@ -22,9 +22,9 @@ async function start(){
 
         // Routes
         app.use("/", userRoutes); 
-        app.use("/login", userRoutes); // Registers POST route
-        app.use("/users", userRoutes); // Registers GET route
-        app.get("/register", userRoutes); // Registers GET route
+        app.post("/login", userRoutes); // Registers POST route
+        app.get("/users", userRoutes); // Registers GET route
+        app.post("/register", userRoutes); // Registers GET route
         app.delete("/user/:id", userRoutes); // Registers DELETE route
         await initialize();
         app.listen(port, () => {
