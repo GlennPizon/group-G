@@ -109,4 +109,62 @@ userRouter.get('/users', async (req: Request, res: Response) => {
     }
 });
 
+
+// GET /user/:id - Get user by ID
+userRouter.get("/users/:id" , async (req: Request, res: Response)=> {
+    try { const { id } = req.params; const user = await repo.findOne({ where: {id}});
+    if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+    }
+
+    return res.status(200).json(user);
+
+        
+    } catch (error) {
+       return res.status (StatusCodes.INTERNAL_SERVER_ERROR).json({error: 'Internal Server Error'}); 
+    }
+});
+
+
+// PUT /user/:id - Update user by ID
+ userRouter.get("/users/:id" , async (req: Request, res: Response)=>{
+    try { 
+    const { id } = req.params; 
+    const user = await repo.findOne({ where: {id}}); 
+    if(!user){
+        return res.status(404).json({ message: 'User not found' });
+
+    }
+    
+ 
+    const { password, title, firstname, lastname, role } = req.body;
+
+    if ( !password || !title || !firstname || !lastname || typeof role !== 'string') {
+        return res.status(StatusCodes.BAD_REQUEST).json({ error: 'Please provide all required fields' });
+    } 
+
+        const hashedPassword = await bcrypt.hash(password, 10);
+        
+        // ✅ Ensure role is valid
+        const roleValue = Object.values(Role).includes(role as Role) ? (role as Role) : Role.User;
+
+        const newUser = repo.create({
+        
+            
+            password: hashedPassword,
+            title,
+            firstname,
+            lastname,
+            role: roleValue
+        });
+
+        await repo.save(newUser);
+        return res.status(StatusCodes.CREATED).json({ message: 'User created successfully', userId: id });
+      
+      
+    } catch (error) {
+        return res.status(500).json({ message: 'Server error', error: error.message });
+    }
+});
+
 export default userRouter;
