@@ -2,12 +2,12 @@ import express from "express";
 import cors from "cors";
 import helmet from "helmet";
 import dotenv from "dotenv";
-import { AppDataSource } from "./data-source";
+import initialize, { AppDataSource} from "./data-source";
 import userRoutes from "./controllers/user.routes"; // Import user routes
 
 dotenv.config();
 const app = express();
-const port = Number(process.env.APP_PORT) || 3000;
+const port = Number(process.env.APP_PORT);
 
 // Middleware
 app.use(express.json());
@@ -21,12 +21,17 @@ app.use("/users", userRoutes); // Registers GET route
 app.get("/register", userRoutes); // Registers GET route
 app.delete("/user/:id", userRoutes); // Registers DELETE route
 
+// ✅ Initialize the application
+start();
 
-// Start server
-AppDataSource.initialize()
-    .then(() => {
-        app.listen(port, () => {
-            console.log(`Server running at http://localhost:${port}`);
-        });
-    })
-    .catch((error) => console.log("Database connection error:", error));
+// ✅ Start the server
+    async function start(){
+        try {
+            await initialize();
+            app.listen(port, () => {
+                console.log(`Server running at http://localhost:${port}`);
+            });
+        } catch (error) {
+            console.error("Server error:", error);
+        }
+    }

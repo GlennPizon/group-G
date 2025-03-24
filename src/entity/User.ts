@@ -1,38 +1,31 @@
-import { Entity, PrimaryColumn, Column } from "typeorm"
+import { Entity, PrimaryColumn, Column } from "typeorm";
 
-
-enum Role {
+export enum Role {
     Admin = "Admin",
     User = "User"
 }
 
 @Entity()
 export class User {
-
-    @PrimaryColumn(
-        {
-        type: "varchar",
-        length: 50
-
-    })
-    id: string
+    @PrimaryColumn({ type: "varchar", length: 50 })
+    id: string;
 
     @Column()
-    email: string
+    email: string;
 
     @Column()
     password: string;
 
     @Column()
-    title: string
+    title: string;
 
     @Column()
-    firstname: string
+    firstname: string;
 
     @Column()
-    lastname: string
+    lastname: string;
 
-    @Column()
+    // ✅ Correct way to define an enum in TypeORM
+    @Column({ type: "enum", enum: Role, default: Role.User })
     role: Role;
-
 }
