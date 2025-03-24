@@ -9,29 +9,29 @@ dotenv.config();
 const app = express();
 const port = Number(process.env.APP_PORT);
 
-// Middleware
-app.use(express.json());
-app.use(cors());
-app.use(helmet());
 
-// Routes
-app.use("/", userRoutes); // Registers both DELETE and POST routes
-app.use("/login", userRoutes); // Registers POST route
-app.use("/users", userRoutes); // Registers GET route
-app.get("/register", userRoutes); // Registers GET route
-app.delete("/user/:id", userRoutes); // Registers DELETE route
 
-// ✅ Initialize the application
 start();
 
-// ✅ Start the server
-    async function start(){
-        try {
-            await initialize();
-            app.listen(port, () => {
-                console.log(`Server running at http://localhost:${port}`);
-            });
-        } catch (error) {
-            console.error("Server error:", error);
-        }
+async function start(){
+    try{
+         // Middleware
+        app.use(express.json());
+        app.use(cors());
+        app.use(helmet());
+
+        // Routes
+        app.use("/", userRoutes); 
+        app.use("/login", userRoutes); // Registers POST route
+        app.use("/users", userRoutes); // Registers GET route
+        app.get("/register", userRoutes); // Registers GET route
+        app.delete("/user/:id", userRoutes); // Registers DELETE route
+        await initialize();
+        app.listen(port, () => {
+            console.log(`Server running at http://localhost:${port}`);
+        });
+    }catch(error){
+        console.error("Database connection error:", error);
     }
+
+}
