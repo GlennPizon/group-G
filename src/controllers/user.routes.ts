@@ -148,18 +148,14 @@ userRouter.get("/users/:id" , async (req: Request, res: Response)=> {
         // ✅ Ensure role is valid
         const roleValue = Object.values(Role).includes(role as Role) ? (role as Role) : Role.User;
 
-        const newUser = repo.create({
-        
-            
-            password: hashedPassword,
-            title,
-            firstname,
-            lastname,
-            role: roleValue
-        });
+        user.password = hashedPassword;
+        user.title = title;
+        user.firstname = firstname;
+        user.lastname = lastname;
+        user.role = roleValue;
 
-        await repo.save(newUser);
-        return res.status(StatusCodes.CREATED).json({ message: 'User created successfully', userId: id });
+await repo.save(user); // ✅ Saves the updated user while retaining the ID
+        return res.status(StatusCodes.CREATED).json({ message: 'User updated successfully', userId: id });
       
       
     } catch (error) {
