@@ -127,7 +127,7 @@ userRouter.get("/users/:id" , async (req: Request, res: Response)=> {
 
 
 // PUT /user/:id - Update user by ID
- userRouter.get("/users/:id" , async (req: Request, res: Response)=>{
+ userRouter.put("/users/:id" , async (req: Request, res: Response)=>{
     try { 
     const { id } = req.params; 
     const user = await repo.findOne({ where: {id}}); 
